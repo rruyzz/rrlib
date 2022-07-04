@@ -1,8 +1,12 @@
 plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
+    id 'maven-publish'
 }
-
+def githubProperties = new Properties()
+githubProperties.load(
+        new FileInputStream(rootProject.file("github.properties"))
+)
 android {
     compileSdk 32
 
@@ -39,3 +43,54 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 }
+
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                from components.release
+                // Replace with your own group ID.
+                groupId 'com.example.rrlib'
+                // Replace with the name of your library
+                artifactId 'rrlib'
+                version '2.0.0'
+            }
+        }
+
+        repositories {
+            maven {
+                name = "rrlib"
+                // Replace GITHUB_USERID with your personal or organisation user ID and
+                // REPOSITORY with the name of the repository on GitHub
+                url = uri("https://maven.pkg.github.com/rruyzz/rrlib")
+                credentials {
+                    username = githubProperties['gpr.usr']
+                    password = githubProperties['gpr.key']
+                }
+            }
+        }
+    }
+}
+
+//afterEvaluate {
+//    publishing {
+//        repositories {
+//            maven {
+//                name = "RRLib"
+//                url = uri("https://maven.pkg.github.com/rruyzz/rrlib")
+//                credentials {
+//                    username = githubProperties['gpr.usr']
+//                    password = githubProperties['gpr.key']
+//                }
+//            }
+//        }
+//        publications {
+//            release(MavenPublication) {
+//                from components.release
+//                groupId 'com.github.rrlib'
+//                artifactId 'rrlib'
+//                version '1.0.0'
+//            }
+//        }
+//    }
+//}
