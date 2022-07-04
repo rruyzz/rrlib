@@ -50,10 +50,10 @@ afterEvaluate {
             release(MavenPublication) {
                 from components.release
                 // Replace with your own group ID.
-                groupId 'com.example.rrlib'
+                groupId 'com.github.rruyzz'
                 // Replace with the name of your library
                 artifactId 'rrlib'
-                version '2.0.0'
+                version '3.0.0'
             }
         }
 
